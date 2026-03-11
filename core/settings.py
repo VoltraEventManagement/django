@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'event',
     'event_request',
     'django_filters',
+    'corsheaders',
     
 ]
 
@@ -98,6 +99,7 @@ DJOSER = {
 AUTH_USER_MODEL = 'user.User'
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware", 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
