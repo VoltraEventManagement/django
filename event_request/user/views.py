@@ -14,7 +14,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 class CreateProposal(CreateAPIView,UpdateAPIView,RetrieveAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = RequestSerializer
-    lookup_field = 'id'
+    lookup_field = 'eventrequest_id'
     def get_queryset(self):
         return EventRequest.objects.all().filter(user = self.request.user)
 
@@ -29,12 +29,12 @@ class CreateProposal(CreateAPIView,UpdateAPIView,RetrieveAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
-class MyRequests(ListAPIView,RetrieveAPIView):
+class MyRequests(ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = RequestSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['status']
-    lookup_field = "eventrequest_id"
+    
     def get_queryset(self):
         data = EventRequest.objects.all().filter(user = self.request.user)
         for event in data:
