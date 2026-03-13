@@ -34,6 +34,7 @@ class MyRequests(ListAPIView):
     serializer_class = RequestSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['status']
+    lookup_field = "eventrequest_id"
     def get_queryset(self):
         data = EventRequest.objects.all().filter(user = self.request.user)
         for event in data:

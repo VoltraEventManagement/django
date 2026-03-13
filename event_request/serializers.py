@@ -16,6 +16,7 @@ class RequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = EventRequest
         fields = ['eventrequest_id','name','description','category','event_type','objective','target_audience','expected_attendees','event_date','city','status','venue','created_at','speaker']
+        
 
 
     def create(self, validated_data):
