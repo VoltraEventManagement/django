@@ -29,7 +29,7 @@ class CreateProposal(CreateAPIView,UpdateAPIView,RetrieveAPIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
-class MyRequests(ListAPIView):
+class MyRequests(ListAPIView,RetrieveAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = RequestSerializer
     filter_backends = [DjangoFilterBackend]
