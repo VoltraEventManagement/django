@@ -35,7 +35,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -87,12 +87,16 @@ REST_FRAMEWORK = {
 DJOSER = {
     'LOGIN_FIELD': 'email', 
     'SEND_ACTIVATION_EMAIL': True,
-    'ACTIVATION_URL': 'api/activate/{uid}/{token}/',
+    'ACTIVATION_URL': 'api/activate/{uid}/{token}/', # page el login bt3t elfront
+    'PASSWORD_RESET_CONFIRM_URL': 'api/reset-password/{uid}/{token}/', # page el new password
     'REST_FRAMEWORK': {
         'TOKEN_MODEL': None,
     },
     "SERIALIZERS": {
         "user_create": "user.serializers.CustomUserCreateSerializer",
+    },
+    "EMAIL": {
+        "activation": "user.serializers.CustomActivationEmail"
     }
 }
 
@@ -216,3 +220,4 @@ cloudinary.config(
     api_key=os.getenv('API_KEY'),  
     api_secret=os.getenv('API_SECRET') 
 )
+

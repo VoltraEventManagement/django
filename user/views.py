@@ -11,6 +11,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import CustomTokenObtainPairSerializer
 
 
+
 # Create your views here.
 User = get_user_model()
 
@@ -27,6 +28,7 @@ class ActivationAccount(APIView):
 
         except (TypeError, ValueError, OverflowError, User.DoesNotExist):
             return Response({"error": "Invalid activation link"}, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 
