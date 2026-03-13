@@ -11,4 +11,4 @@ class RegisteredEvents(ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = EventUserSerializer
     def get_queryset(self):
-        return EventUser.objects.filter(eventuser_id = self.request.user.id)
+        return EventUser.objects.filter(user_id = self.request.user.id)
