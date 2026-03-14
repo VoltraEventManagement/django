@@ -5,7 +5,8 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from djoser.email import ActivationEmail
 from django.core.mail import EmailMultiAlternatives
-
+from django.conf import settings
+from djoser import conf
 
 class CustomUserCreateSerializer(UserCreateSerializer):
 
@@ -45,15 +46,27 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         return token
     
+
+
+
 class CustomActivationEmail(ActivationEmail):
     template_name = None  
+
     def send(self, to=None, *args, **kwargs):
-        
         user = self.context.get("user")
         if not user:
             raise ValueError("CustomActivationEmail requires 'user' in context")
 
-        activation_url = self.context.get("activation_url")
+        
+        activation_url_template = settings.DJOSER.get("ACTIVATION_URL") 
+        if not activation_url_template:
+            raise ValueError("ACTIVATION_URL not defined in DJOSER settings")
+
+        
+        uid = self.context.get("uid")
+        token = self.context.get("token")
+        activation_url = activation_url_template.format(uid=uid, token=token)
+
         subject = "Activate your account"
         text_content = f"Hello {user.username}, activate your account: {activation_url}"
         html_content = f"""

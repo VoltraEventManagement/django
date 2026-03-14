@@ -89,15 +89,16 @@ DJOSER = {
     'SEND_ACTIVATION_EMAIL': True,
     'ACTIVATION_URL': 'api/activate/{uid}/{token}/', # page el login bt3t elfront
     'PASSWORD_RESET_CONFIRM_URL': 'api/reset-password/{uid}/{token}/', # page el new password
+    # 'DOMAIN': 'http://127.0.0.1:8000/',
     'REST_FRAMEWORK': {
         'TOKEN_MODEL': None,
     },
     "SERIALIZERS": {
         "user_create": "user.serializers.CustomUserCreateSerializer",
     },
-    "EMAIL": {
-        "activation": "user.serializers.CustomActivationEmail"
-    }
+    # "EMAIL": {
+    #     "activation": "user.serializers.CustomActivationEmail"
+    # }
 }
 
 AUTH_USER_MODEL = 'user.User'
