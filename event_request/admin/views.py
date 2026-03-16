@@ -12,14 +12,18 @@ from django.core.mail import EmailMultiAlternatives
 from django_filters.rest_framework import DjangoFilterBackend
 
 
-class AllRequests(ListAPIView,RetrieveAPIView):
+class AllRequests(ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = RequestSerializer
     queryset = EventRequest.objects.all()
-    lookup_field = id
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['status']
 
+class RequestDetail(RetrieveAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = RequestSerializer
+    queryset = EventRequest.objects.all()
+    lookup_field = 'eventrequest_id'
 
 
 class ApproveRequest(APIView):
