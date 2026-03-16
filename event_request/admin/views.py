@@ -89,7 +89,7 @@ class RejectRequest(APIView):
         except:
             return Response({"error":"that event request is not found"},status = status.HTTP_400_BAD_REQUEST)
         
-        request.status = 'approved'
+        request.status = 'rejected'
         request.save()
         return Response({"message":"that request is rejected"},status = status.HTTP_200_OK)
         
