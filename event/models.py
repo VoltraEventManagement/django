@@ -10,6 +10,9 @@ class Speaker(models.Model):
     speaker_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     position = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
     
     
 
@@ -27,13 +30,14 @@ class Event(models.Model):
     venue = models.BooleanField()
     is_finished = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True,null=True)
-
+    def __str__(self):
+        return self.title
 
 class Photo(models.Model):
     photo_id = models.AutoField(primary_key=True)
     photo = CloudinaryField('image')
     event_id = models.ForeignKey(Event,on_delete=models.CASCADE)
-
+   
 
 
 class EventUser(models.Model):
@@ -47,4 +51,4 @@ class EventUser(models.Model):
     class Meta:
         unique_together = ('event_id', 'user_id')
 
-
+   

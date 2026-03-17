@@ -63,6 +63,7 @@ class EventRequest(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     speaker = models.ManyToManyField('event.Speaker',related_name='request_speakers')
     event_design = CloudinaryField('image')
-    
-    
+
+    def __str__(self):
+        return self.name
     
