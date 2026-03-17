@@ -10,6 +10,7 @@ from django.conf import settings
 from event.models import Event
 from django.core.mail import EmailMultiAlternatives
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.response import Response
 
 
 class AllRequests(ListAPIView):
@@ -28,6 +29,8 @@ class RequestDetail(RetrieveAPIView):
 
 class ApproveRequest(APIView):
     def post(self,request,id):
+        if request.user.role != 'admin':
+            return Response({'message':"you must be an admin to do this"}, status=status.HTTP_403_FORBIDDEN)
         try:
             request = EventRequest.objects.get(eventrequest_id = id)
         except:
@@ -83,7 +86,11 @@ class ApproveRequest(APIView):
         
 
 class RejectRequest(APIView):
+    
     def post(self,request,id):
+        if request.user.role != 'admin':
+            return Response({'message':"you must be an admin to do this"}, status=status.HTTP_403_FORBIDDEN)
+    
         try:
             request = EventRequest.objects.get(eventrequest_id = id)
         except:

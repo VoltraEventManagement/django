@@ -1,4 +1,4 @@
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,get_object_or_404,redirect
 from rest_framework.views import APIView
 from django.utils.http import urlsafe_base64_decode
 from django.contrib.auth import get_user_model
@@ -9,27 +9,34 @@ from rest_framework.generics import UpdateAPIView,RetrieveAPIView
 from .serializers import UserSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import CustomTokenObtainPairSerializer
-
-
+from django.contrib.auth.tokens import default_token_generator
+from django.http import HttpResponseBadRequest
+from djoser.email import ActivationEmail
+from django.core.mail import EmailMultiAlternatives
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
 
 # Create your views here.
 User = get_user_model()
 
-class ActivationAccount(APIView):
-    permission_classes = [AllowAny]
-    def get(self, request,uid,token):
-        try:
-            pk = urlsafe_base64_decode(uid).decode()
-            user = User.objects.get(pk=pk)
-            
-            user.is_active = True  
-            user.save()          
-            return Response({"message": "Account activated"}, status=status.HTTP_200_OK)
-
-        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-            return Response({"error": "Invalid activation link"}, status=status.HTTP_400_BAD_REQUEST)
 
 
+# ---------------------------
+# Activation View
+# ---------------------------
+def CustomActivate(request, uid, token):
+    try:
+        uid_decoded = urlsafe_base64_decode(uid).decode()
+        user = User.objects.get(pk=uid_decoded)
+    except Exception:
+        return HttpResponseBadRequest("Invalid activation link")
+
+    if default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+        return redirect("https://alx-voltra.vercel.app/login")
+
+    return HttpResponseBadRequest("Invalid or expired token")
 
 
 class AccountListView(RetrieveAPIView):
