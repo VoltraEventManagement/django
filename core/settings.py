@@ -89,7 +89,8 @@ DJOSER = {
     'SEND_ACTIVATION_EMAIL': True,
     'ACTIVATION_URL': 'api/activate/{uid}/{token}/', # page el login bt3t elfront
     # not implemented yet: 'PASSWORD_RESET_CONFIRM_URL': 'api/reset-password/{uid}/{token}/', # page el new password
-    
+    'DOMAIN': 'django-kf3s.vercel.app', 
+    'SITE_NAME': 'Voltra',
     'REST_FRAMEWORK': {
         'TOKEN_MODEL': None,
     },
