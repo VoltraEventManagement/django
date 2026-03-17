@@ -63,7 +63,7 @@ class CustomActivationEmail(ActivationEmail):
         token = default_token_generator.make_token(user)
 
         
-        activation_url = f"http://127.0.0.1:8000/api/activate/{uid}/{token}/"
+        activation_url = f"https://django-kf3s.vercel.app/api/activate/{uid}/{token}/"
         subject = "Activate your account "
 
         html_content = f"""
