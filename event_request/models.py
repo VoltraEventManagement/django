@@ -7,15 +7,11 @@ from cloudinary.models import CloudinaryField
 User = get_user_model()
 
 class CATEGORY:
-    city_team = 'city_team'
-    department = 'department'
-    voltra_team = 'voltra_team'
-    alumni = 'alumni'
+    public = 'public'
+    private = 'private'
     choices = [
-        (alumni, 'Alumni'),
-        (voltra_team, 'Voltra team'),
-        (city_team,'City team'),
-        (department,'Department'),
+        (private,'Private'),
+        (public,'Public'),
     ]
 
 class EVENT_TYPE:
@@ -63,6 +59,7 @@ class EventRequest(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     speaker = models.ManyToManyField('event.Speaker',related_name='request_speakers')
     event_design = CloudinaryField('image')
+    paid = models.BooleanField()
 
     def __str__(self):
         return self.name

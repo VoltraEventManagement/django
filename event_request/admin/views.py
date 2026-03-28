@@ -1,5 +1,5 @@
 from ..serializers import RequestSerializer
-from rest_framework.generics import ListAPIView,RetrieveAPIView
+from rest_framework.generics import ListAPIView,RetrieveAPIView,RetrieveUpdateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from ..models import EventRequest
@@ -16,14 +16,14 @@ from rest_framework.response import Response
 class AllRequests(ListAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = RequestSerializer
-    queryset = EventRequest.objects.all()
+    queryset = EventRequest.objects.all().prefetch_related('speaker')
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['status']
 
-class RequestDetail(RetrieveAPIView):
+class RequestDetail(RetrieveUpdateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = RequestSerializer
-    queryset = EventRequest.objects.all()
+    queryset = EventRequest.objects.all().prefetch_related('speaker')
     lookup_field = 'eventrequest_id'
 
 
@@ -39,7 +39,7 @@ class ApproveRequest(APIView):
         request.status = 'approved'
         request.save()
         
-        event = Event.objects.create(title = request.name,date = request.event_date,city = request.city,description = request.description,type= request.event_type,category= request.category,target_audience = request.target_audience,venue= request.venue,is_finished = False)
+        event = Event.objects.create(title = request.name,date = request.event_date,city = request.city,description = request.description,type= request.event_type,category= request.category,target_audience = request.target_audience,venue= request.venue,is_finished = False,paid=request.paid)
         
         event.event_speakers.set(request.speaker.all())
         

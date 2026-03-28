@@ -17,10 +17,14 @@ class ALX_STATUS:
     alumni = 'alumni'
     learner = 'learner'
     guest = 'guest'
+    city_team = 'city_team'
+    voltra_team = 'voltra_team'
     choices = [
         (alumni, 'Alumni'),
         (learner, 'Learner'),
         (guest,'guest'),
+        (city_team,'city_team'),
+        (voltra_team,'voltra_team'),
     ]
 
 
@@ -54,6 +58,8 @@ class User(AbstractUser):
     phone_no = models.CharField(max_length=11,null=False,blank=False)
     user_status = models.CharField(choices=ALX_STATUS.choices,max_length=50,blank=False,null=False)
     city = models.CharField(max_length=100,null=False,blank=False)
+    track = models.CharField(max_length=100)
+    linked_profile = models.URLField(null=True,blank=True)
 
 
 

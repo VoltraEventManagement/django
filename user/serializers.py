@@ -19,10 +19,11 @@ class CustomUserCreateSerializer(UserCreateSerializer):
             "id",
             "email",
             "password",
-            "role",
             "phone_no",
             "city",
             "user_status",
+            "track",
+            "linked_profile",
             
         )
 
@@ -30,13 +31,16 @@ class CustomUserCreateSerializer(UserCreateSerializer):
             "phone_no": {"required": True},
             "city": {"required": True},
             "password": {"write_only": True},
+            "track": {"required": True},
+            "linked_profile": {"required": False},
+
         }
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['username','role','id','phone_no','user_status','city','email']
-        read_only_fields = ['id', 'role']
+        fields = ['username','role','id','phone_no','user_status','city','email','track','linked_profile']
+        read_only_fields = ['id', 'role','email','user_status']
     
 class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
@@ -46,6 +50,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
 
         token["role"] = user.role
         token["email"] = user.email
+        token["user_status"] = user.user_status
 
         return token
     

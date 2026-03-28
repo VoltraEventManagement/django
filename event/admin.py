@@ -35,7 +35,12 @@ class PhotoAdmin(admin.ModelAdmin):
 
 @admin.register(EventUser)
 class EventUserAdmin(admin.ModelAdmin):
-    list_display = ('event_id', 'user_id', 'track', 'is_checked')
-    list_filter  = ('is_checked', 'track')
-    search_fields = ('user_id__email', 'track')
+    list_display = ('event_id', 'user_id', 'get_track', 'is_checked')
+    list_filter  = ('is_checked', 'user_id__track')
+    search_fields = ('user_id__email', 'user_id__track')
     ordering = ('event_id',)
+
+    def get_track(self, obj):
+        return obj.user_id.track
+    get_track.short_description = 'Track'
+    get_track.admin_order_field = 'user_id__track'

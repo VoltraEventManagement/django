@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from ..models import EventRequest
-from rest_framework.generics import CreateAPIView,UpdateAPIView,ListAPIView,RetrieveAPIView
+from rest_framework.generics import CreateAPIView,RetrieveUpdateAPIView,ListAPIView
 from rest_framework.permissions import IsAuthenticated
 from ..serializers import RequestSerializer
 from ..models import EventRequest
@@ -11,10 +11,9 @@ from rest_framework import status
 from django_filters.rest_framework import DjangoFilterBackend
 # Create your views here.
 
-class CreateProposal(CreateAPIView,UpdateAPIView,RetrieveAPIView):
+class CreateProposal(CreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = RequestSerializer
-    lookup_field = 'eventrequest_id'
     def get_queryset(self):
         return EventRequest.objects.all().filter(user = self.request.user)
 
@@ -28,6 +27,13 @@ class CreateProposal(CreateAPIView,UpdateAPIView,RetrieveAPIView):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
+class RetrieveUpdateProposal(RetrieveUpdateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = RequestSerializer
+    lookup_field = 'eventrequest_id'
+    def get_queryset(self):
+        return EventRequest.objects.all().filter(user = self.request.user)
+
 
 class MyRequests(ListAPIView):
     permission_classes = [IsAuthenticated]
@@ -36,7 +42,7 @@ class MyRequests(ListAPIView):
     filterset_fields = ['status']
     
     def get_queryset(self):
-        data = EventRequest.objects.all().filter(user = self.request.user)
+        data = EventRequest.objects.all().filter(user = self.request.user).prefetch_related('speaker')
         for event in data:
             if event.status == 'new' and timezone.now() - event.created_at>timedelta(days=1):
                 event.status = 'reviewing'
