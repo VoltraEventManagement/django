@@ -15,12 +15,12 @@ class RequestSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = EventRequest
-        fields = ['eventrequest_id','name','description','category','event_type','objective','target_audience','expected_attendees','event_date','city','status','venue','created_at','speaker','paid']
+        fields = ['eventrequest_id','name','description','category','event_type','objective','target_audience','expected_attendees','event_date','event_time','city','status','venue','created_at','speaker','paid']
 
     def validate(self, data):
         
         event_date = data.get('event_date')
-        if event_date and event_date < timezone.now():
+        if event_date and event_date < timezone.now().date():
             raise serializers.ValidationError({"event_date": "Event date cannot be in the past."})
         
         for key, value in data.items():

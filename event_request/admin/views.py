@@ -39,11 +39,23 @@ class ApproveRequest(APIView):
         request.status = 'approved'
         request.save()
         
-        event = Event.objects.create(title = request.name,date = request.event_date,city = request.city,description = request.description,type= request.event_type,category= request.category,target_audience = request.target_audience,venue= request.venue,is_finished = False,paid=request.paid)
+        event = Event.objects.create(
+            title=request.name,
+            date=request.event_date,
+            time=request.event_time,
+            city=request.city,
+            description=request.description,
+            type=request.event_type,
+            category=request.category,
+            target_audience=request.target_audience,
+            venue=request.venue,
+            is_finished=False,
+            paid=request.paid
+        )
         
         event.event_speakers.set(request.speaker.all())
         
-        formatted_date = request.event_date.strftime("%A, %d %B %Y - %I:%M %p")
+        formatted_date = f"{request.event_date.strftime('%A, %d %B %Y')} - {request.event_time.strftime('%I:%M %p')}"
 
         subject = "Your Event Request Has Been Approved 🎉"
         from_email = settings.EMAIL_HOST_USER

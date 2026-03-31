@@ -21,7 +21,8 @@ class Speaker(models.Model):
 class Event(models.Model):
     event_id = models.AutoField(primary_key=True)
     title = models.TextField(max_length=200)
-    date = models.DateTimeField(null=False)
+    date = models.DateField()
+    time = models.TimeField()
     city = models.TextField(max_length=100)
     description = models.TextField()
     event_speakers = models.ManyToManyField(Speaker,related_name='event_speakers')

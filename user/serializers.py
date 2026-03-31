@@ -51,6 +51,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token["role"] = user.role
         token["email"] = user.email
         token["user_status"] = user.user_status
+        token["username"] = user.username
 
         return token
     

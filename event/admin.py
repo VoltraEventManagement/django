@@ -7,7 +7,7 @@ from event_request.models import EventRequest
 
 @admin.register(EventRequest)
 class EventRequestAdmin(admin.ModelAdmin):
-    list_display = ('name', 'category', 'event_type', 'status', 'event_date', 'city', 'user', 'created_at')
+    list_display = ('name', 'category', 'event_type', 'status', 'event_date', 'event_time', 'city', 'user', 'created_at')
     list_filter  = ('status', 'category', 'event_type', 'city')
     search_fields = ('name', 'user__email', 'city')
     ordering = ('-created_at',)
@@ -21,7 +21,7 @@ class SpeakerAdmin(admin.ModelAdmin):
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
-    list_display = ('title', 'type', 'category', 'date', 'city', 'venue', 'is_finished', 'created_at')
+    list_display = ('title', 'type', 'category', 'date', 'time', 'city', 'venue', 'is_finished', 'created_at')
     list_filter  = ('type', 'category', 'venue', 'is_finished', 'city')
     search_fields = ('title', 'city', 'target_audience')
     ordering = ('-created_at',)
